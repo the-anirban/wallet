@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Decryption</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Decryption function
+        function decryptAES(encryptedUrl, password) {
+            try {
+                var bytes = CryptoJS.AES.decrypt(encryptedUrl, password);
+                var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+                if (decryptedText) {
+                    console.log("Decrypted URL: " + decryptedText);
+                    return true; // Decryption successful
+                }
+            } catch (e) {
+                // Catch any errors during decryption
+                console.error("Error during decryption:", e);
+            }
+            return false; // Decryption failed
+        }
+
+        // Get the password from URL parameters
+        var password = getUrlParameter('password');
+
+        // List of encrypted URLs
+        var encryptedUrls = [
+            "U2FsdGVkX19+YQ7E9a+L9P3z9Gh4wsUKqRsryNXpZLk=",
+            "U2FsdGVkX19pSwD8vtrptpCtZC8E89d/WV5aZtvJv3g=",
+            "U2FsdGVkX1+mbrNlmvZ8q9YpqEzt/UHpF/h6z5h0xY8="
+        ];
+
+        // Attempt to decrypt each URL
+        var decrypted = false;
+        for (var i = 0; i < encryptedUrls.length; i++) {
+            decrypted = decryptAES(encryptedUrls[i], password);
+            if (decrypted) break; // Stop if one URL is decrypted successfully
+        }
+
+        // If none of the URLs could be decrypted
+        if (!decrypted) {
+            console.log("Invalid password");
+        }
+    </script>
+</body>
+</html>
