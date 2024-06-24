@@ -58,10 +58,10 @@
             "U2FsdGVkX18OxuSyLX+MHZd3xUIeymX2saBvPEsAztxEOHD0C7y9s8FAcruD9u1o2wGfdSlsdoCxVVPHdy80s0FW7iC5k832Wt+fqweXXvSu23cX/lJUHivJ+M+QK3e+NNYF4/OXJJs6Z/lmdbcU4i0HEN9srN5dBWw3qb4ibrlZOK9NdVKTsjfAvZb341wz",
             "U2FsdGVkX1+mbrNlmvZ8q9YpqEzt/UHpF/h6z5h0xY8="
         ];*/
-        // Assuming you're in a browser environment
-const jsonFilePath = 'https://raw.githubusercontent.com/the-anirban/wallet/data/data.json';
 
-fetch(jsonFilePath)
+        const jsonUrl = 'https://raw.githubusercontent.com/the-anirban/wallet/data/data.json'; // Replace with your JSON endpoint or file path
+
+fetch(jsonUrl)
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -70,7 +70,10 @@ fetch(jsonFilePath)
   })
   .then(data => {
     // Data is the parsed JSON object
-    if (data) {
+    if (data && data.items) {
+      // Extract names from items array and create encryptedUrls array
+      const encryptedUrls = data.items.map(item => item.name);
+
               // Get the password from URL parameters
         var password = getUrlParameter('p');
 
@@ -85,13 +88,17 @@ fetch(jsonFilePath)
         if (!decrypted) {
             console.log("Invalid password");
         }
+        
+      //console.log('Encrypted URLs array:', encryptedUrls);
+      // Now you can use encryptedUrls array in your application
     } else {
-      console.error('JSON file format is incorrect or missing "encryptedUrls" array.');
+      console.error('JSON data format is incorrect or missing items array.');
     }
   })
   .catch(error => {
-    console.error('Error fetching JSON file:', error);
+    console.error('Error fetching JSON:', error);
   });
+
   var encryptData = {};
         function encrypt(urlToEncrypt,password,i) {
         // Encrypt the URL
