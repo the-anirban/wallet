@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title></title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <iframe id="main" style="border: none;width:100%;height:100%;" src=""></iframe>
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Decryption function
+        function decryptAES(encryptedUrl, password) {
+            try {
+                var bytes = CryptoJS.AES.decrypt(encryptedUrl, password);
+                var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+                if (decryptedText) {
+                    console.log("Decrypted URL: " + decryptedText);
+                    document.getElementById("main").src = decryptedText;
+                    return true; // Decryption successful
+                }
+            } catch (e) {
+                // Catch any errors during decryption
+                console.error("Error during decryption:", e);
+            }
+            return false; // Decryption failed
+        }
+
+        // Get the password from URL parameters
+        var password = getUrlParameter('p');
+
+        // List of encrypted URLs
+        var encryptedUrls = [
+            "U2FsdGVkX19+YQ7E9a+L9P3z9Gh4wsUKqRsryNXpZLk=",
+            "U2FsdGVkX18OxuSyLX+MHZd3xUIeymX2saBvPEsAztxEOHD0C7y9s8FAcruD9u1o2wGfdSlsdoCxVVPHdy80s0FW7iC5k832Wt+fqweXXvSu23cX/lJUHivJ+M+QK3e+NNYF4/OXJJs6Z/lmdbcU4i0HEN9srN5dBWw3qb4ibrlZOK9NdVKTsjfAvZb341wz",
+            "U2FsdGVkX1+mbrNlmvZ8q9YpqEzt/UHpF/h6z5h0xY8="
+        ];
+
+        // Attempt to decrypt each URL
+        var decrypted = false;
+        for (var i = 0; i < encryptedUrls.length; i++) {
+            decrypted = decryptAES(encryptedUrls[i], password);
+            if (decrypted) break; // Stop if one URL is decrypted successfully
+        }
+
+        // If none of the URLs could be decrypted
+        if (!decrypted) {
+            console.log("Invalid password");
+        }
+        function encrypt(urlToEncrypt,password) {
+        // Encrypt the URL
+        var encrypted = CryptoJS.AES.encrypt(urlToEncrypt, password).toString();
+        console.log("Encrypted URL:", encrypted);
+
+        // Decrypt the URL to verify
+        var bytes = CryptoJS.AES.decrypt(encrypted, password);
+        var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
+        console.log("Decrypted URL:", decryptedUrl);
+        }
+    </script>
+</body>
+</html>
