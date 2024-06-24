@@ -70,7 +70,7 @@ fetch(jsonFilePath)
   })
   .then(data => {
     // Data is the parsed JSON object
-    if (data && data.encryptedUrls) {
+    if (data) {
               // Get the password from URL parameters
         var password = getUrlParameter('p');
 
