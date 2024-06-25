@@ -135,7 +135,7 @@
         try {
           await navigator
             .serviceWorker
-            .register('wallet/serviceworker.js');
+            .register('/wallet/serviceworker.js');
         }
         catch (e) {
           console.log('SW registration failed');
