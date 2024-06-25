@@ -4,7 +4,7 @@
 	"start_url": "index.html",
 	"display": "standalone",
 	"background_color": "#121212",
-	"theme_color": "black",
+	"theme_color": "#121212",
 	"orientation": "portrait-primary",
 	"scope": ".",
 	"description": "This App was Created To Keep A Track of my Spendings",

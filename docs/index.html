@@ -17,6 +17,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      background-color: #121212;
+      color: white;
     }
 
     iframe {
@@ -119,7 +121,10 @@
 
       // If none of the URLs could be decrypted
       if (!decrypted) {
-        console.log("Invalid password");
+        localStorage.removeItem("urlsData");
+        runMain();
+        document.getElementById("main").src = 
+        "data:text/html;base64,PGh0bWw+PGhlYWQ+PHN0eWxlPmJvZHkgeyBiYWNrZ3JvdW5kLWNvbG9yOiAjMTIxMjEyO2NvbG9yOiB3aGl0ZTt9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHA+SW52YWxpZCBwYXNzd29yZDwvcD48L2JvZHk+PC9odG1sPg==";
       }
     }
     runMain();
