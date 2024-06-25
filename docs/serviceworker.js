@@ -1,13 +1,13 @@
 const staticDevCoffee = "Wallet-v1"
 const assets = [
-  "/",
-  "/index.html",
-  "/android-chrome-192x192.png",
-  "docs/android-chrome-512x512.png",
-  "docs/apple-touch-icon.png",
-  "docs/favicon-16x16.png",
-  "docs/favicon-32x32.png",
-  "docs/favicon.ico"
+  "/wallet/",
+  "/wallet/index.html",
+  "/wallet/android-chrome-192x192.png",
+  "wallet/android-chrome-512x512.png",
+  "wallet/apple-touch-icon.png",
+  "wallet/favicon-16x16.png",
+  "wallet/favicon-32x32.png",
+  "wallet/favicon.ico"
 ]
 
 self.addEventListener("install", installEvent => {
