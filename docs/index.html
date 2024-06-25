@@ -29,12 +29,39 @@
       height: 100%;
       border: none;
     }
+
+    .button {
+      margin: auto;
+      width: 150px;
+      margin-top: 15rem;
+      padding: 15px 25px;
+      font-size: 24px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      color: #fff;
+      background-color: #4384f1;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 9px #999;
+    }
+
+    .button:hover {
+      background-color: #034ecd
+    }
+
+    .button:active {
+      background-color: #034ecd;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 
 <body>
-  <button id="install" hidden>Verify</button>
+  <button  class="button" id="install" hidden>Verify</button>
 
   <iframe id="main" style="border: none;width:100%;height:100%;" src=""></iframe>
   <script>
@@ -102,7 +129,7 @@
         console.error("Fetch error:", error);
         window.location.reload();
         throw error;
-        
+
       }
     }
 
@@ -125,8 +152,8 @@
       if (!decrypted) {
         localStorage.removeItem("urlsData");
         runMain();
-        document.getElementById("main").src = 
-        "data:text/html;base64,PGh0bWw+PGhlYWQ+PHN0eWxlPmJvZHkgeyBiYWNrZ3JvdW5kLWNvbG9yOiAjMTIxMjEyO2NvbG9yOiB3aGl0ZTt9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHA+SW52YWxpZCBwYXNzd29yZDwvcD48L2JvZHk+PC9odG1sPg==";
+        document.getElementById("main").src =
+          "data:text/html;base64,PGh0bWw+PGhlYWQ+PHN0eWxlPmJvZHkgeyBiYWNrZ3JvdW5kLWNvbG9yOiAjMTIxMjEyO2NvbG9yOiB3aGl0ZTt9PC9zdHlsZT48L2hlYWQ+PGJvZHk+PHA+SW52YWxpZCBwYXNzd29yZDwvcD48L2JvZHk+PC9odG1sPg==";
       }
     }
     runMain();
@@ -135,16 +162,16 @@
       // Encrypt the URL
       var encrypted = CryptoJS.AES.encrypt(urlToEncrypt, password).toString();
       //console.log("Encrypted URL:", encrypted);
-      
+
       // Decrypt the URL to verify
       var bytes = CryptoJS.AES.decrypt(encrypted, password);
       var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
       //console.log("Decrypted URL:", decryptedUrl);
 
-      encryptData += '{ "name": "'+ encrypted + '" },';
+      encryptData += '{ "name": "' + encrypted + '" },';
     }
     function encryptCompletion() {
-      encryptData = encryptData.substring(0, encryptData.length - 2) + ']}';
+      encryptData = encryptData.substring(0, encryptData.length - 1) + ']}';
       console.log(encryptData);
     }
     // main.js
