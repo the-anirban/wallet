@@ -70,45 +70,59 @@
      ];*/
 
     const jsonUrl = 'https://raw.githubusercontent.com/the-anirban/wallet/data/data.json'; // Replace with your JSON endpoint or file path
+    async function fetchAndCache(url) {
+      // Check if the data is already in localStorage
+      let cachedData = localStorage.getItem("urlsData");
 
-    fetch(jsonUrl)
-      .then(response => {
+      // If the data exists in localStorage, parse and return it
+      if (cachedData) {
+        console.log("Data retrieved from localStorage");
+        return JSON.parse(cachedData);
+      }
+
+      // If the data is not in localStorage, fetch it from the API
+      try {
+        const response = await fetch(url);
+
+        // Ensure the response is OK
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json();
-      })
-      .then(data => {
-        // Data is the parsed JSON object
-        if (data && data.items) {
-          // Extract names from items array and create encryptedUrls array
-          const encryptedUrls = data.items.map(item => item.name);
 
-          // Get the password from URL parameters
-          var password = getUrlParameter('p');
+        const data = await response.json();
 
-          // Attempt to decrypt each URL
-          var decrypted = false;
-          for (var i = 0; i < encryptedUrls.length; i++) {
-            decrypted = decryptAES(encryptedUrls[i], password);
-            if (decrypted) break; // Stop if one URL is decrypted successfully
-          }
+        // Save the response in localStorage
+        localStorage.setItem("urlsData", JSON.stringify(data));
+        console.log("Data fetched from API and saved to localStorage");
 
-          // If none of the URLs could be decrypted
-          if (!decrypted) {
-            console.log("Invalid password");
-          }
+        return data;
+      } catch (error) {
+        console.error("Fetch error:", error);
+        throw error;
+      }
+    }
 
-          //console.log('Encrypted URLs array:', encryptedUrls);
-          // Now you can use encryptedUrls array in your application
-        } else {
-          console.error('JSON data format is incorrect or missing items array.');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching JSON:', error);
-      });
+    function runMain() {
+      var data = fetchAndCache(jsonUrl);
+      // Extract names from items array and create encryptedUrls array
+      const encryptedUrls = data.items.map(item => item.name);
 
+      // Get the password from URL parameters
+      var password = getUrlParameter('p');
+
+      // Attempt to decrypt each URL
+      var decrypted = false;
+      for (var i = 0; i < encryptedUrls.length; i++) {
+        decrypted = decryptAES(encryptedUrls[i], password);
+        if (decrypted) break; // Stop if one URL is decrypted successfully
+      }
+
+      // If none of the URLs could be decrypted
+      if (!decrypted) {
+        console.log("Invalid password");
+      }
+    }
+    runMain();
     var encryptData = {};
     function encrypt(urlToEncrypt, password, i) {
       // Encrypt the URL
