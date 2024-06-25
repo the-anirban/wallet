@@ -130,21 +130,22 @@
       }
     }
     runMain();
-    var encryptData = {};
-    function encrypt(urlToEncrypt, password, i) {
+    var encryptData = '{"items": [';
+    function encrypt(urlToEncrypt, password) {
       // Encrypt the URL
       var encrypted = CryptoJS.AES.encrypt(urlToEncrypt, password).toString();
       console.log("Encrypted URL:", encrypted);
-
+      
       // Decrypt the URL to verify
       var bytes = CryptoJS.AES.decrypt(encrypted, password);
       var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
       console.log("Decrypted URL:", decryptedUrl);
       encryptData["encryptedUrls"][i] = encrypted;
+
+      encryptData += '{ "name": "'+ encrypted + '" },';
     }
-    function encryptFormat(arr) {
-      for (var i = 1; i < arr.length; i++)
-        encrypt(arr[0], arr[i], i - 1);
+    function encryptCompletion() {
+      encryptData = encryptData.substring(0, encryptData.length() - 2) + ']}';
     }
     // main.js
 
