@@ -7,8 +7,7 @@ const assets = [
   "docs/apple-touch-icon.png",
   "docs/favicon-16x16.png",
   "docs/favicon-32x32.png",
-  "docs/favicon.ico",
-
+  "docs/favicon.ico"
 ]
 
 self.addEventListener("install", installEvent => {
