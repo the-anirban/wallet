@@ -238,7 +238,20 @@
       installPrompt = null;
       installButton.setAttribute("hidden", "");
     }
+    // script.js
+document.addEventListener("DOMContentLoaded", function() {
+    var iframe = document.getElementById('main');
+    var loading = document.getElementById('loading');
 
+    iframe.onload = function() {
+        setTimeout(function() {
+            loading.style.display = 'none'; // Hide the loading animation
+            iframe.style.opacity = '1'; // Fade in the iframe
+        }, 5000); // Wait for 5 seconds before fading in
+    };
+
+    iframe.src = iframe.src; // Trigger iframe load (needed for some browsers)
+});
   </script>
   <script>
     window.addEventListener('load', () => {
