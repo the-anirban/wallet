@@ -102,8 +102,8 @@
       }
     }
 
-    function runMain() {
-      var data = fetchAndCache(jsonUrl);
+    async function runMain() {
+      var data = await fetchAndCache(jsonUrl);
       // Extract names from items array and create encryptedUrls array
       const encryptedUrls = data.items.map(item => item.name);
 
