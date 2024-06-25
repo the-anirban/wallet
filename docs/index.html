@@ -100,8 +100,9 @@
         return JSON.parse(data);
       } catch (error) {
         console.error("Fetch error:", error);
-        throw error;
         window.location.reload();
+        throw error;
+        
       }
     }
 
