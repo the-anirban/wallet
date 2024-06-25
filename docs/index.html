@@ -140,11 +140,11 @@
       var bytes = CryptoJS.AES.decrypt(encrypted, password);
       var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
       console.log("Decrypted URL:", decryptedUrl);
-      
+
       encryptData += '{ "name": "'+ encrypted + '" },';
     }
     function encryptCompletion() {
-      encryptData = encryptData.substring(0, encryptData.length() - 2) + ']}';
+      encryptData = encryptData.substring(0, encryptData.length - 2) + ']}';
     }
     // main.js
 
