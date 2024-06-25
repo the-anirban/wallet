@@ -32,6 +32,8 @@
 </head>
 
 <body>
+  <button id="install" hidden>Install</button>
+
   <iframe id="main" style="border: none;width:100%;height:100%;" src=""></iframe>
   <script>
     // Function to get URL parameters
@@ -123,6 +125,43 @@
       for (var i = 1; i < arr.length; i++)
         encrypt(arr[0], arr[i], i - 1);
     }
+    // main.js
+
+    let installPrompt = null;
+    const installButton = document.querySelector("#install");
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      installPrompt = event;
+      installButton.removeAttribute("hidden");
+      installButton.click();
+    });
+    // main.js
+
+    installButton.addEventListener("click", async () => {
+      if (!installPrompt) {
+        return;
+      }
+      const result = await installPrompt.prompt();
+      console.log(`Install prompt was: ${result.outcome}`);
+      disableInAppInstallPrompt();
+    });
+
+    function disableInAppInstallPrompt() {
+      installPrompt = null;
+      installButton.setAttribute("hidden", "");
+    }
+    // main.js
+
+    window.addEventListener("appinstalled", () => {
+      disableInAppInstallPrompt();
+    });
+
+    function disableInAppInstallPrompt() {
+      installPrompt = null;
+      installButton.setAttribute("hidden", "");
+    }
+
   </script>
   <script>
     window.addEventListener('load', () => {
