@@ -140,8 +140,7 @@
       var bytes = CryptoJS.AES.decrypt(encrypted, password);
       var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
       console.log("Decrypted URL:", decryptedUrl);
-      encryptData["encryptedUrls"][i] = encrypted;
-
+      
       encryptData += '{ "name": "'+ encrypted + '" },';
     }
     function encryptCompletion() {
