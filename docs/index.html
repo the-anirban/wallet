@@ -1,140 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallet</title></title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-</head>
-<body>
-    <iframe id="main" style="border: none;width:100%;height:100%;" src=""></iframe>
-    <script>
-        // Function to get URL parameters
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
-
-        // Decryption function
-        function decryptAES(encryptedUrl, password) {
-            try {
-                var bytes = CryptoJS.AES.decrypt(encryptedUrl, password);
-                var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-                if (decryptedText) {
-                    console.log("Decrypted URL: " + decryptedText);
-                    document.getElementById("main").src = decryptedText;
-                    return true; // Decryption successful
-                }
-            } catch (e) {
-                // Catch any errors during decryption
-                console.error("Error during decryption:", e);
-            }
-            return false; // Decryption failed
-        }
-
-
-        // List of encrypted URLs
-       /* var encryptedUrls = [
-            "U2FsdGVkX19+YQ7E9a+L9P3z9Gh4wsUKqRsryNXpZLk=",
-            "U2FsdGVkX18OxuSyLX+MHZd3xUIeymX2saBvPEsAztxEOHD0C7y9s8FAcruD9u1o2wGfdSlsdoCxVVPHdy80s0FW7iC5k832Wt+fqweXXvSu23cX/lJUHivJ+M+QK3e+NNYF4/OXJJs6Z/lmdbcU4i0HEN9srN5dBWw3qb4ibrlZOK9NdVKTsjfAvZb341wz",
-            "U2FsdGVkX1+mbrNlmvZ8q9YpqEzt/UHpF/h6z5h0xY8="
-        ];*/
-
-        const jsonUrl = 'https://raw.githubusercontent.com/the-anirban/wallet/data/data.json'; // Replace with your JSON endpoint or file path
-
-fetch(jsonUrl)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet</title>
+  <link rel="manifest" href="manifest.json" />
+  <!-- ios support -->
+  <link rel="apple-touch-icon" href="images/icons/icon-72x72.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-96x96.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-128x128.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-144x144.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-152x152.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-384x384.png" />
+  <link rel="apple-touch-icon" href="images/icons/icon-512x512.png" />
+  <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+  <meta name="theme-color" content="#db4938" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
-    return response.json();
-  })
-  .then(data => {
-    // Data is the parsed JSON object
-    if (data && data.items) {
-      // Extract names from items array and create encryptedUrls array
-      const encryptedUrls = data.items.map(item => item.name);
 
-              // Get the password from URL parameters
-        var password = getUrlParameter('p');
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
 
-              // Attempt to decrypt each URL
-        var decrypted = false;
-        for (var i = 0; i < encryptedUrls.length; i++) {
+<body>
+  <iframe id="main" style="border: none;width:100%;height:100%;" src=""></iframe>
+  <script>
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+    // Decryption function
+    function decryptAES(encryptedUrl, password) {
+      try {
+        var bytes = CryptoJS.AES.decrypt(encryptedUrl, password);
+        var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+        if (decryptedText) {
+          console.log("Decrypted URL: " + decryptedText);
+          document.getElementById("main").src = decryptedText;
+          return true; // Decryption successful
+        }
+      } catch (e) {
+        // Catch any errors during decryption
+        console.error("Error during decryption:", e);
+      }
+      return false; // Decryption failed
+    }
+
+
+    // List of encrypted URLs
+    /* var encryptedUrls = [
+         "U2FsdGVkX19+YQ7E9a+L9P3z9Gh4wsUKqRsryNXpZLk=",
+         "U2FsdGVkX18OxuSyLX+MHZd3xUIeymX2saBvPEsAztxEOHD0C7y9s8FAcruD9u1o2wGfdSlsdoCxVVPHdy80s0FW7iC5k832Wt+fqweXXvSu23cX/lJUHivJ+M+QK3e+NNYF4/OXJJs6Z/lmdbcU4i0HEN9srN5dBWw3qb4ibrlZOK9NdVKTsjfAvZb341wz",
+         "U2FsdGVkX1+mbrNlmvZ8q9YpqEzt/UHpF/h6z5h0xY8="
+     ];*/
+
+    const jsonUrl = 'https://raw.githubusercontent.com/the-anirban/wallet/data/data.json'; // Replace with your JSON endpoint or file path
+
+    fetch(jsonUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Data is the parsed JSON object
+        if (data && data.items) {
+          // Extract names from items array and create encryptedUrls array
+          const encryptedUrls = data.items.map(item => item.name);
+
+          // Get the password from URL parameters
+          var password = getUrlParameter('p');
+
+          // Attempt to decrypt each URL
+          var decrypted = false;
+          for (var i = 0; i < encryptedUrls.length; i++) {
             decrypted = decryptAES(encryptedUrls[i], password);
             if (decrypted) break; // Stop if one URL is decrypted successfully
-        }
+          }
 
-        // If none of the URLs could be decrypted
-        if (!decrypted) {
+          // If none of the URLs could be decrypted
+          if (!decrypted) {
             console.log("Invalid password");
-        }
-        
-      //console.log('Encrypted URLs array:', encryptedUrls);
-      // Now you can use encryptedUrls array in your application
-    } else {
-      console.error('JSON data format is incorrect or missing items array.');
-    }
-  })
-  .catch(error => {
-    console.error('Error fetching JSON:', error);
-  });
+          }
 
-  var encryptData = {};
-        function encrypt(urlToEncrypt,password,i) {
-        // Encrypt the URL
-        var encrypted = CryptoJS.AES.encrypt(urlToEncrypt, password).toString();
-        console.log("Encrypted URL:", encrypted);
-
-        // Decrypt the URL to verify
-        var bytes = CryptoJS.AES.decrypt(encrypted, password);
-        var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
-        console.log("Decrypted URL:", decryptedUrl);
-        encryptData["encryptedUrls"][i] = encrypted;
+          //console.log('Encrypted URLs array:', encryptedUrls);
+          // Now you can use encryptedUrls array in your application
+        } else {
+          console.error('JSON data format is incorrect or missing items array.');
         }
-    function encryptFormat(arr) {
-        for (var i=1;i<arr.length;i++)
-          encrypt(arr[0], arr[i], i-1);
-    }
-    </script>
-    <script>
-      window.addEventListener('load', () => {
-      registerSW();
+      })
+      .catch(error => {
+        console.error('Error fetching JSON:', error);
       });
-    
-      // Register the Service Worker
-      async function registerSW() {
+
+    var encryptData = {};
+    function encrypt(urlToEncrypt, password, i) {
+      // Encrypt the URL
+      var encrypted = CryptoJS.AES.encrypt(urlToEncrypt, password).toString();
+      console.log("Encrypted URL:", encrypted);
+
+      // Decrypt the URL to verify
+      var bytes = CryptoJS.AES.decrypt(encrypted, password);
+      var decryptedUrl = bytes.toString(CryptoJS.enc.Utf8);
+      console.log("Decrypted URL:", decryptedUrl);
+      encryptData["encryptedUrls"][i] = encrypted;
+    }
+    function encryptFormat(arr) {
+      for (var i = 1; i < arr.length; i++)
+        encrypt(arr[0], arr[i], i - 1);
+    }
+  </script>
+  <script>
+    window.addEventListener('load', () => {
+      registerSW();
+    });
+
+    // Register the Service Worker
+    async function registerSW() {
       if ('serviceWorker' in navigator) {
         try {
-        await navigator
+          await navigator
             .serviceWorker
             .register('serviceworker.js');
         }
         catch (e) {
-        console.log('SW registration failed');
+          console.log('SW registration failed');
         }
       }
-      }
-    </script>
-    
+    }
+  </script>
+
 </body>
+
 </html>
