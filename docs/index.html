@@ -207,7 +207,7 @@
         localStorage.setItem("urlsData", JSON.stringify(data));
         console.log("Data fetched from API and saved to localStorage");
 
-        return JSON.parse(data);
+        return JSON.parse(JSON.stringify(data));
       } catch (error) {
         console.error("Fetch error:", error);
         window.location.reload();
