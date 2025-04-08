@@ -186,10 +186,11 @@
       let cachedData = localStorage.getItem("urlsData");
 
       // If the data exists in localStorage, parse and return it
-      if (cachedData) {
-        console.log("Data retrieved from localStorage");
-        return JSON.parse(cachedData);
-      }
+      // if (cachedData) {
+      //   console.log("Data retrieved from localStorage");
+      //   return JSON.parse(cachedData);
+      // }
+      //For new data we are preventing cache
 
       // If the data is not in localStorage, fetch it from the API
       try {
