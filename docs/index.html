@@ -185,7 +185,7 @@
       // Check if the data is already in localStorage
 
       
-      //let cachedData = localStorage.getItem("urlsData");
+      let cachedData = localStorage.getItem("urlsData");
 
       // If the data exists in localStorage, parse and return it
       // if (cachedData) {
@@ -207,14 +207,10 @@
 
         // Save the response in localStorage
         localStorage.setItem("urlsData", JSON.stringify(data));
-        let cachedData = localStorage.getItem("urlsData");
-        if (cachedData) {
-           //console.log("Data retrieved from localStorage");
-           return JSON.parse(cachedData);
-        }
-        // console.log("Data fetched from API and saved to localStorage");
 
-        // return JSON.parse(JSON.stringify(data));
+        console.log("Data fetched from API and saved to localStorage");
+
+        return JSON.parse(JSON.stringify(data));
       } catch (error) {
         console.error("Fetch error:", error);
         window.location.reload();
@@ -226,7 +222,7 @@
     async function runMain() {
       var data = await fetchAndCache(jsonUrl);
       // Extract names from items array and create encryptedUrls array
-      const encryptedUrls = data.items.map(item => item.name);
+      const encryptedUrls = data.encryptedUrls.map(url => url);//data.items.map(item => item.name);
 
       // Get the password from URL parameters
       var password = getUrlParameter('p');
