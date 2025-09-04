@@ -7,16 +7,18 @@ function extractTextFromHTML(htmlString) {
 
 function extractEmailData(body) {
   body = extractTextFromHTML(body);
-  body = body.slice(0, -129); // Adjust depending on format
 
+  // Regex patterns adapted to the new email format
   var paidAmountRegex = /paid\s+₹([\d.]+)/i;
   var receivedAmountRegex = /received\s+₹([\d.]+)/i;
-  var recipientRegex = /to\s+([A-Za-z\s]+)(?=\s*Transaction ID|Date|₹|$)/i;
-  var senderRegex = /from\s+([A-Za-z\s]+)(?=\s*Transaction ID|Date|₹|$)/i;
-  var timeDateRegex = /(\d{1,2}:\d{2}\s*[AP]M)\s*IST,\s*(\d+\s+\w+\s+\d{4})/i;
-  var transactionIdRegex = /transaction\s*id\s*[:\s]+(\w+)/i;
-  var balanceRegex = /Balance\s*[:]\s*₹([\d.]+)/i;
+  var recipientRegex = /to\s+([A-Za-z\s.&]+?)\s+at/i;
+  var senderRegex = /Hey\s+([A-Za-z\s.&]+),/i; // Extracts user's name after "Hey"
+  var timeDateRegex = /at\s+(\d{1,2}:\d{2}\s*[AP]M)\s*IST,\s*(\d+\s+\w+\s+\d{4})/i;
+  var transactionIdRegex = /transaction id\s+(\w+)/i;
+  var balanceRegex = /balance is\s+₹([\d.]+)/i;
+  var balanceRegexAlt = /updated balance is\s+₹([\d.]+)/i;
 
+  // Match patterns
   var paidAmountMatch = body.match(paidAmountRegex);
   var receivedAmountMatch = body.match(receivedAmountRegex);
   var amount = paidAmountMatch ? paidAmountMatch[1] : (receivedAmountMatch ? receivedAmountMatch[1] : 'N/A');
@@ -24,11 +26,11 @@ function extractEmailData(body) {
   var senderMatch = body.match(senderRegex);
   var timeDateMatch = body.match(timeDateRegex);
   var transactionIdMatch = body.match(transactionIdRegex);
-  var balanceMatch = body.match(balanceRegex);
+  var balanceMatch = body.match(balanceRegex) || body.match(balanceRegexAlt);
 
   return {
-    recipient: recipientMatch ? recipientMatch[1] : 'N/A',
-    senderName: senderMatch ? senderMatch[1] : 'N/A',
+    recipient: recipientMatch ? recipientMatch[1].trim() : 'N/A',
+    senderName: senderMatch ? senderMatch[1].trim() : 'N/A',
     time: timeDateMatch ? timeDateMatch[1] : 'N/A',
     date: timeDateMatch ? timeDateMatch[2] : 'N/A',
     transactionId: transactionIdMatch ? transactionIdMatch[1] : 'N/A',
