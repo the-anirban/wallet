@@ -1,3 +1,10 @@
+function extractTextFromHTML(htmlString) {
+htmlString = htmlString.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+htmlString = htmlString.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
+htmlString = htmlString.replace(/<[^>]+>/g, ' ');
+return htmlString.replace(/\s+/g, ' ').trim();
+}
+
 function extractEmailData(body) {
   body = extractTextFromHTML(body);
 
